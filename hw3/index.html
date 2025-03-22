@@ -28,79 +28,182 @@
 	<body>
 		<div class="container">
 		<h1>CS184/284A Spring 2025 Homework 3 Write-Up</h1>
-		<div style="text-align: center;">Names: </div>
+		<div style="text-align: center;">Name: Nicolas DePalma</div>
 
 		<br>
 
-		Link to webpage: (TODO) <a href="https://cs184.eecs.berkeley.edu/sp25">cs184.eecs.berkeley.edu/sp25</a>
-		Link to GitHub repository: (TODO) <a href="https://cs184.eecs.berkeley.edu/sp25">cs184.eecs.berkeley.edu/sp25</a>
-		
-		<figure>
-			<img src="cornell.png" alt="Cornell Boxes with Bunnies" style="width:70%"/>
-			<figcaption>You can add images with captions!</figcaption>
-		</figure>
+		Link to webpage: <a href="https://cal-cs184-student.github.io/hw-webpages-nico-1/hw3/index.html">https://cal-cs184-student.github.io/hw-webpages-nico-1/hw3/index.html</a>
+
+		<br>
+
+		Link to GitHub repository: <a href="https://github.com/cal-cs184-student/sp25-hw3-nico-hw3">https://github.com/cal-cs184-student/sp25-hw3-nico-hw3</a>
 
 		<!--
 		We've already added one heading per part, to make your write-up as navigable when grading. Please fit your write-up within these sections!
 		-->
 
 		<h2>Overview</h2>
-		Give a high-level overview of what you implemented in this homework. Think about what you've built as a whole. Share your thoughts on what interesting things you've learned from completing the homework.
+		</p>Give a high-level overview of what you implemented in this homework. Think about what you've built as a whole. Share your thoughts on what interesting things you've learned from completing the homework.
 
 		<h2>Part 1: Ray Generation and Scene Intersection</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+	  </p>The first to parts of the rendering pipeline are ray generation and scene intersection. For each pixel,</p>
+		<ul>
+			<li>
+				We generate a ray from the camera origin to the pixel location on the image plane. The ray direction is calculated by normalizing the vector from the camera origin to the pixel location.
+			</li>
+			<li>
+				We then test for intersections with all objects in the scene for each ray (typically with triangles, spheres, boxes, etc.). After finding the closest
+				intersection point, we calculate the surface normal at the intersection point. With this information, we can calculate the color of the pixel by shading 
+				the intersection point based on the material properties.
+			</li>
+		</ul>
+	  </p>One of the algorithms for intersection is triangle intersection. We use the Möller–Trumbore Algorithm to test for ray-triangle intersections based off
+		the vertices of the triangle and the ray origin and direction. We use the vertices to find the plane of the triangle, and then test if the ray intersects
+		or is parallel. If the ray intersects, we calculate the barycentric coordinates of the intersection point to determine if the intersection point is inside
+		the triangle, in which case, we update the closest intersection point and the surface normal.</p>
 
-		<p>Here is an example 2x2 gridlike structure using an HTML table. Each <b>tr</b> is a row and each <b>td</b> is a column in that row. You might find this useful for framing and showing your result images in an organized fashion.</p>
+		<p>A few small .dae files with normal shading</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
 				<td style="text-align: center;">
-				  <img src="cornell.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <img src="images/CBspheres.png" width="400px"/>
+				  <figcaption>CBspheres_lambertian</figcaption>
 				</td>
 				<td style="text-align: center;">
-				  <img src="cornell.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <img src="images/bunny.png" width="400px"/>
+				  <figcaption>bunny</figcaption>
 				</td>
 			  </tr>
 			  <tr>
 				<td style="text-align: center;">
-				  <img src="cornell.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <img src="images/CBcoil.png" width="400px"/>
+				  <figcaption>CBcoil</figcaption>
 				</td>
 				<td style="text-align: center;">
-				  <img src="cornell.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <img src="images/CBgems.png" width="400px"/>
+				  <figcaption>CBgems</figcaption>
 				</td>
 			  </tr>
 			</table>
 		</div>
 		
 		<h2>Part 2: Bounding Volume Hierarchy</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		<p>My BVH construction algorithm starts by computing the bounding box of all primitives in the range \([start, end]\), then turning this into a node.
+		If the number of primatives in this box is no greater than <code>max_leaf_size</code>, we make it a leaf node. Otherwise, we create a new (temporary) bounding box of
+		all the centroids of the primitives in the box, and split the original box along the longest axis of this new bounding box. We then partition the primitives based
+		on this split, and recursively build the left and right children of the node. This process is repeated until we reach a leaf node. In the case where all
+		primatives end up in the left or right split, we manually split the box at the midpoint of the split axis.</p>
+
+		<p>A few large .dae files with normal shading</p>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="images/CBlucy.png" width="400px"/>
+				  <figcaption>CBlucy</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="images/max.png" width="400px"/>
+				  <figcaption>maxplanck</figcaption>
+				</td>
+			  </tr>
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="images/cow.png" width="400px"/>
+				  <figcaption>cow</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="images/wall-e.png" width="400px"/>
+				  <figcaption>wall-e</figcaption>
+				</td>
+			  </tr>
+			</table>
+		</div>
+
+		<p>Before BVH acceleration, even a fairly simple scene like <i>dae/sky/bunny.dae</i> took a relatively long time to render: upwards of 30 seconds.
+		However, with acceleration, extremely complex scenes like <i>dae/sky/bunny.dae</i>, <i>dae/sky/wall-e.dae</i>, and <i>dae/meshedit/maxplanck.dae</i>
+	  take a matter of one second or less to render (with normal shading). It is clear that implementing the BVH and BVH intersection algorithms
+	  greatly improves the efficiency of ray tracing, just like incorporating bounding boxes to triangle rasterization.</p>
 
 		<h2>Part 3: Direct Illumination</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		<p>Direct Lighting with Uniform Hemisphere Sampling determines the color value at a pixel by sending a ray from the camera origin through each pixel on the image plane.
+		For each ray, we test for intersections with all objects in the scene. If the ray intersects an object, we calculate the surface normal at the intersection point.
+		We then calculate the color of the pixel by shading the intersection point based on the material properties, sampling the hemisphere uniformly to calculate the
+		direct illumination at the intersection point. We also calculate the direct illumination at the intersection.</p>
+	  </p>Direct Lighting by Importance Sampling Lights is similar, but instead of sampling the hemisphere uniformly, we sample the lights in the scene based on their
+		emission. We calculate the direct illumination at the intersection point by sending a ray from the intersection point to the light source, and then shading the
+		intersection point based on the material properties; if the ray we cast is blocked by any objects in the scene, the light contributes nothing.</p>
+
+		<p>CBBunny with both lighting implementations:</p>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+					<img src="images/CBbunny_H_64_32.png" width="400px"/>
+					<figcaption>Uniform Hemisphere Sampling</figcaption>
+				</td>
+				<td style="text-align: center;">
+					<img src="images/bunny_64_32.png" width="400px"/>
+				  <figcaption>Importance Sampling</figcaption>
+				</td>
+			  </tr>
+			</table>
+		</div>
+
+		<p>CBSpheres Using Importance Sampling:</p>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+					<img src="images/spheres_1_1.png" width="400px"/>
+					<figcaption>1 Light Ray</figcaption>
+				</td>
+				<td style="text-align: center;">
+					<img src="images/spheres_1_4.png" width="400px"/>
+				  <figcaption>4 Light Rays</figcaption>
+				</td>
+			  </tr>
+				<tr>
+					<td style="text-align: center;">
+						<img src="images/spheres_1_16.png" width="400px"/>
+						<figcaption>16 Light Rays</figcaption>
+					</td>
+					<td style="text-align: center;">
+						<img src="images/spheres_1_64.png" width="400px"/>
+						<figcaption>64 Light Rays</figcaption>
+					</td>
+					</tr>
+			</table>
+		</div>
+
+		<p>Generally, uniform hemisphere sampling and importance sampling produce similar images at high sampling or light ray rates. However, the quality (in 
+			terms of brightness and noisiness)
+			of the image produced by importance sampling is generally higher than that of uniform hemisphere sampling, as importance sampling is more efficient
+			at sampling the lights in the scene. This is especially true when the scene has many lights, as importance sampling can sample the lights based on
+			their emission, whereas uniform hemisphere sampling samples the lights uniformly.
+		</p>
 
 		<h2>Part 4: Global Illumination</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		<p>
+			My indirect lighting function uses Monte Carlo integration and Russian roulette to calculate the indirect illumination at the intersection point.
+			It functions similarly to one bounce illumination, but instead of making one function call, we recurse through the function until we reach the
+			maximum ray depth or Russian roulette terminates the ray. We add the illumination received at each hit point to the final color of the pixel,
+			weighting by the PDF of the ray direction and continuation probability.
+		</p>
 
-		<h2>Part 5: Adaptive Sampling</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		<p>Scenes With Direct and Indirect Global Illumination:</p>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+					<img src="images/spheres.png" width="400px"/>
+					<figcaption>CBspheres_lambertian</figcaption>
+				</td>
+				</tr>
+			</table>
+		</div>
 
-		<h2>(Optional) Part 6: Extra Credit Opportunities</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-		
-		<h2>Additional Notes (please remove)</h2>
-		<ul>
-			<li>You can also add code if you'd like as so: <code>code code code</code></li>
-			<li>If you'd like to add math equations, 
-				<ul>
-					<li>You can write inline equations like so: \( a^2 + b^2 = c^2 \)</li>
-					<li>You can write display equations like so: \[ a^2 + b^2 = c^2 \]</li>
-				</ul>
-			</li>
-		</ul>
 		</div>
 	</body>
 </html>
