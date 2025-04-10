@@ -103,6 +103,7 @@
 						</td>
 						</tr>
 					</table>
+				</div>
 			</li>
 			<li>
 				Changing the damping factor seems to affect how "bouncy" the cloth behaves, or how quickly it settles down. A higher damping factor causes the cloth to
@@ -136,7 +137,44 @@
 		</div>
 
 		<h2>Part 3: Handling collisions with other objects</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		<p>
+			Handing collisions involes checking at each time step whether a point mass has moved inside a collision object, then moving that mass out of the object if so to the point where it intersected
+			the object, accounting for object friction as well. For spheres, my implementation involves checking the distance between the mass and the sphere's center, and if it is less than the sphere's radius,
+			I move the mass out of the sphere by a distance equal to the difference between the radius and the distance. For planes, I check the distance between the mass and the plane's normal, and if it is less than 0
+			(signifying the mass has moved through the plane), I move the mass out of the plane by a distance equal to the negative of the distance.
+		</p>
+		<p><i>scene/sphere.json</i> at differing ks levels</p>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+				<tr>
+				<td style="text-align: center;">
+					<img src="sphere-ks-5000.png" width="400px"/>
+					<figcaption>ks = 5000</figcaption>
+				</td>
+				<td style="text-align: center;">
+					<img src="sphere-ks-500.png" width="400px"/>
+					<figcaption>ks = 500</figcaption>
+				</td>
+				</tr>
+				<tr>
+				<td colspan="2" style="text-align: center;">
+					<img src="sphere-ks-50000.png" width="400px"/>
+					<figcaption>ks = 50000</figcaption>
+				</td>
+				</tr>
+			</table>
+		</div>
+		The results show that a higher ks value causes the cloth to collide more stiffly with the sphere, while a lower ks value causes the cloth to drape more loosely over the sphere.
+		<p>Plane collision</p>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="plane-collision.png" width="400px"/>
+				</td>
+			  </tr>
+			</table>
+		</div>
 
 		<h2>Part 4: Handling self-collisions</h2>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
