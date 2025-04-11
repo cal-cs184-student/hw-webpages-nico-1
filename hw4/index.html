@@ -43,7 +43,9 @@
 		-->
 
 		<h2>Overview</h2>
-		Give a high-level overview of what you implemented in this homework. Think about what you've built as a whole. Share your thoughts on what interesting things you've learned from completing the homework.
+		This homework implements a mesh simulation of a cloth-like object using a mass-spring system. The simulation is done using numerical integration, and it includes
+		collision detection and response with other objects, as well as self-collision detection and response. Additionally, the homework implements shaders for rendering
+		the cloth and other objects in the scene.
 
 		<h2>Part 1: Masses and springs</h2>
 		<p><i>scene/pinned2.json</i> with different constraints</p>
@@ -177,6 +179,11 @@
 		</div>
 
 		<h2>Part 4: Handling self-collisions</h2>
+		<p>
+			My self-collision implementation involes hashing each point-mass into a 3D grid at each time step, then checking if each mass collides with any other mass in its
+			grid cell. If so, I check if the distance between the two masses is less than the sum of their radii, and if so, I move the mass out of the other mass by a distance equal to the difference between
+			the distance and the sum of their radii.
+		</p>
 		<p>Self-collision at different stages</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
@@ -225,7 +232,88 @@
 		</p>
 
 		<h2>Part 5: Shaders</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		<p>
+			A shader is a program that is used to conrol the rendering of graphics. A shader program sends vertices through a pipeline with two parts. First,
+			the vertex shader takes in the vertices and transforms them into screen space. Then, the fragment shader takes in the transformed vertices and colors them based on their position
+			and other attributes. The fragment shader is run for each pixel on the screen (technically, each fragnemt after rasterization),
+			and it determines the color of that pixel based on the attributes of the vertex it is associated with.
+		</p>
+		<p>
+			Blinn-Phong shading is a type of reflection that combines the ambient, diffuse, and specular components of light reflecting from an object
+			to create a final color that feels more realistic. The ambient component is the base color of the object, the diffuse component is the color of the object when lit from a light source,
+			and the specular component is the color of the object when lit from a light source at a glancing angle (the "shininess" of the object).
+		</p>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+				<tr>
+				<td style="text-align: center;">
+					<img src="phong-ambient.png" width="400px"/>
+					<figcaption>Only ambient</figcaption>
+				</td>
+				<td style="text-align: center;">
+					<img src="phong-diffuse.png" width="400px"/>
+					<figcaption>Only diffuse</figcaption>
+				</td>
+				</tr>
+				<tr>
+				<td style="text-align: center;">
+					<img src="phong-specular.png" width="400px"/>
+					<figcaption>Only specular</figcaption>
+				</td>
+				<td style="text-align: center;">
+					<img src="phong.png" width="400px"/>
+					<figcaption>All</figcaption>
+				</td>
+				</tr>
+			</table>
+		</div>
+		<p>Texture mapping shader</p>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="own-texture.png" width="400px"/>
+				</td>
+			  </tr>
+			</table>
+		</div>
+		<p>Bump and Displacement mapping</p>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+				<tr>
+				<td style="text-align: center;">
+					<img src="bump.png" width="400px"/>
+					<figcaption>Bump</figcaption>
+				</td>
+				<td style="text-align: center;">
+					<img src="displacement.png" width="400px"/>
+					<figcaption>Displacement</figcaption>
+				</td>
+				</tr>
+			</table>
+		</div>
+		<p>
+			Bump mapping creates a look like bumps and wrinkles on a surface by altering the lighting to give the illusion of texture using a normal map
+			to purturb the normals of the surface. Displacement mapping, on the other hand, actually alters the geometry of the surface to create bumps and wrinkles.
+			In doing so, displacement mapping is more realistic.
+			Since bump mapping doesn't rely on the vertices, it will still look good even with lower mesh resolution. However, displacement mapping requires a higher
+			resolution in order to look good, so the effect of changing the resoltion from 16x16 to 128x128 is minimal for bump mapping, but very noticeable for displacement mapping.
+		</p>
+		<p>Mirror shader</p>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+				<tr>
+				<td style="text-align: center;">
+					<img src="mirror-cloth.png" width="400px"/>
+					<figcaption>Cloth</figcaption>
+				</td>
+				<td style="text-align: center;">
+					<img src="mirror-sphere.png" width="400px"/>
+					<figcaption>Sphere</figcaption>
+				</td>
+				</tr>
+			</table>
+		</div>
 
 		</div>
 	</body>
