@@ -177,7 +177,52 @@
 		</div>
 
 		<h2>Part 4: Handling self-collisions</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		<p>Self-collision at different stages</p>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+				<tr>
+				<td style="text-align: center;">
+					<img src="selfCollission-early.png" width="400px"/>
+					<figcaption>Early</figcaption>
+				</td>
+				<td style="text-align: center;">
+					<img src="selfCollission-mid.png" width="400px"/>
+					<figcaption>Mid</figcaption>
+				</td>
+				</tr>
+				<tr>
+				<td colspan="2" style="text-align: center;">
+					<img src="selfCollission-late.png" width="400px"/>
+					<figcaption>Resting</figcaption>
+				</td>
+				</tr>
+			</table>
+		</div>
+		<p>Varying density and ks</p>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+				<tr>
+				<td style="text-align: center;">
+					<img src="selfCollision-density5.png" width="400px"/>
+					<figcaption>Density = 5</figcaption>
+				</td>
+				<td style="text-align: center;">
+					<img src="selfCollision-ks10000.png" width="400px"/>
+					<figcaption>Ks = 10000</figcaption>
+				</td>
+				</tr>
+				<tr>
+				<td colspan="2" style="text-align: center;">
+					<img src="selfCollision-density-and-ks.png" width="400px"/>
+					<figcaption>Density = 5 and Ks = 10000</figcaption>
+				</td>
+				</tr>
+			</table>
+		</div>
+		<p>
+			Varying the density and ks values seems to affect how "heavy" the cloth behaves. Increasing the density and/or ks makes the cloth appear more stiff and heavy, while
+			decreasing them makes it more fluid and flowy as it falls.
+		</p>
 
 		<h2>Part 5: Shaders</h2>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
